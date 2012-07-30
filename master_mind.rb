@@ -39,15 +39,15 @@ class Master_mind
   end
 
   def self.getOutputArray2s (sudoGuess, sudoSolution, output)
-    x = 0
-    while (x<sudoGuess.length) #shouldnt use each do loop if you are going to delete elements from the array
-      if sudoGuess[x] == sudoSolution[x]
+    counter = 0
+    while (counter<sudoGuess.length) #shouldnt use each do loop if you are going to delete elements from the array
+      if sudoGuess[counter] == sudoSolution[counter]
         output << 2
-        sudoGuess.delete_at(x)
-        sudoSolution.delete_at(x)
-        x-=1
+        sudoGuess.delete_at(counter)
+        sudoSolution.delete_at(counter)
+        counter-=1
       end
-      x+=1
+      counter+=1
     end
   end
 
@@ -108,21 +108,25 @@ class Master_mind
     @old_Guesses = []
   end
 
-  def self.setSizeOfSolutionAndGenerateIt (n)
+  def self.setSizeOfSolutionAndGenerateIt (solutionSize)
 
-     if n > 9 || n<3
+     if SolutionSizeIsInvalid?(solutionSize)
         return false
      end
 
-    a = []
-    b = 0
-    while b <n
+    solutionArray = []
+    solutionCounter = 0
+    while solutionCounter <solutionSize
 
-      a[b] = rand(8)+1
-      b+=1
+      solutionArray[solutionCounter] = rand(8)+1
+      solutionCounter+=1
     end
-     self.setSolutionArray a
+     self.setSolutionArray solutionArray
      return true
+  end
+
+  def self.SolutionSizeIsInvalid? (solutionSize)
+    return solutionSize > 9 || solutionSize<3
   end
 
   #methods below currently have no tests
@@ -144,8 +148,6 @@ class Master_mind
     tempGuessArray = []
     inputArray.each do |x| tempGuessArray << x.to_s.to_i end
     setGuessArray(tempGuessArray)
-    temp = getOutputArray
-    puts(OutputHandler.outputMessage(temp.to_s))
     addToOldGuesses(tempGuessArray)
     addToOldOutputs(getOutputArray)
   end
